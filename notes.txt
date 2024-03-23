@@ -1,0 +1,16 @@
+optimise the total code with chatgpt
+stats on the tests
+
+practise wrongly spelled words with repeat no of times as variable
+learning mode to keep the words in sequence
+
+review/delete word button 
+
+test type - retest - includes - all correctly attempted words also
+given least weightage to least attempted or older words
+
+repeat the sound of the word automatically every 5 seconds
+
+
+prep of word list:
+    6a words masked_chunked_sentence not done

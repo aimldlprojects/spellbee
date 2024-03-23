@@ -1,0 +1,11 @@
+show only available length of words from the selected words in UI
+
+review/delete word button 
+
+test type - incorrect, practised a week ago..
+retest option includes - all correctly attempted words also
+given least weightage to least attempted or older words
+most worngly spelled words
+repeat the sound of the word automatically every 5 seconds
+pracise wrongly spelled words with repeat time as variable
+learning mode to keep the words in sequence
