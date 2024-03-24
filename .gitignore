@@ -1,0 +1,4 @@
+# Distribution / packaging
+#ocr/scanned_files
+*.jpg
+ocr/**/*.jpg
