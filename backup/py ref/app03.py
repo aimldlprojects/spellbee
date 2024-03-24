@@ -14,66 +14,57 @@ import tempfile
 
 class MultiSelectDropdown:
     def __init__(self, parent, options, **kwargs):
-        # Initialize the parent widget, available options, and selected options
         self.parent = parent
         self.options = options
         self.selected_options = {self.options[0]} if options else set()
 
-        # Create a StringVar to track the entry text
         self.var = tk.StringVar()
-
-        # Create the entry widget to display selected options
         self.entry = ttk.Entry(self.parent, textvariable=self.var, **kwargs)
-        self.entry.grid(row=5, column=1, padx=(0, 9), pady=5, sticky="ew")
+        self.entry.grid(row=5, column=1, padx=(0, 0), pady=5)  # Set column span to 2
 
         # Create a button with a dropdown icon
-        self.dropdown_button = ttk.Button(self.parent, text=u"\u25BE", command=self.toggle_dropdown, width=1)
+        self.dropdown_button = ttk.Button(self.parent, text=u"\u25BE", command=self.toggle_dropdown, width=0.5)
         self.dropdown_button.grid(row=5, column=1, padx=(120, 0), pady=1)  # Place in column 3
 
         # Resize the dropdown button
         self.dropdown_button.config(style='Padded.TButton', padding=(0, 0, 0, 0))  # Adjust width and font size as needed
 
-        # Initialize dropdown and listbox
         self.dropdown = None
         self.listbox = None
-        self.popup_opened = False
 
-        # Update the entry field with selected options
         self.refresh_entry()
 
     def create_dropdown(self):
-        if self.dropdown:
-            return  # Avoid creating multiple instances
-
-        # Create a dropdown window
         self.dropdown = tk.Toplevel(self.parent)
-        self.dropdown.overrideredirect(True)  # No window decorations
+        self.dropdown.transient(self.parent)
+        self.dropdown.grab_set()
 
-        # Position the dropdown window below the entry
+        # Positioning
         x = self.entry.winfo_rootx()
         y = self.entry.winfo_rooty() + self.entry.winfo_height()
         self.dropdown.geometry(f"+{x}+{y}")
 
-        # Create a listbox to display options
         self.listbox = tk.Listbox(self.dropdown, selectmode='multiple', exportselection=False)
         self.listbox.pack(fill='both', expand=True)
 
-        # Insert available options into the listbox
         for option in self.options:
             self.listbox.insert('end', option)
+        # Ensure the UI reflects the current state of selected_options
+        for option in self.selected_options:
+            self.listbox.selection_set(self.options.index(option))
 
-            # Set the selected options in the listbox
-            if option in self.selected_options:
-                self.listbox.selection_set(self.options.index(option))
-
-        # Bind events
         self.listbox.bind('<<ListboxSelect>>', self.on_listbox_select)
-        self.dropdown.bind("<FocusOut>", self.on_focus_out)
+        self.dropdown.bind('<FocusOut>', self.on_focus_out)
 
-        self.parent.bind("<1>", self.global_click)
-
-        self.dropdown.focus_set()
-        self.popup_opened = True
+    def global_click(self, event):
+        """
+        Close the dropdown if the click occurred outside of it.
+        """
+        if self.dropdown:
+            # Check if the click is outside the dropdown window
+            if not (self.dropdown.winfo_containing(event.x_root, event.y_root) or
+                    self.dropdown_button.winfo_containing(event.x_root, event.y_root)):
+                self.destroy_dropdown()
 
     def destroy_dropdown(self):
         """
@@ -84,38 +75,31 @@ class MultiSelectDropdown:
             self.dropdown = None
             # Unbind the global click event to clean up
             self.parent.unbind("<1>")
-        self.popup_opened = False
+        print('distroy', self.dropdown)
 
-    def toggle_dropdown(self):
-        # Toggle the dropdown visibility
-        if self.popup_opened:
-            self.destroy_dropdown()
+    def toggle_dropdown(self, event=None):
+        if self.dropdown and self.dropdown.winfo_exists():
+            self.dropdown.destroy()
+            self.dropdown = None
         else:
             self.create_dropdown()
 
-    def global_click(self, event):
-        """
-        Close the dropdown if the click occurred outside of it.
-        """
-        if self.popup_opened:
-            if not (self.dropdown.winfo_containing(event.x_root, event.y_root) or 
-                    self.dropdown_button.winfo_containing(event.x_root, event.y_root)):
-                self.destroy_dropdown()
-
     def on_focus_out(self, event=None):
-        # Keep the dropdown open on focus out
+        # Do not hide the dropdown automatically on focus out to allow manual deselection
         pass
 
     def on_listbox_select(self, event=None):
-        # Update selected options based on listbox selection
+        # Get list of currently selected options
         newly_selected_options = {self.options[i] for i in self.listbox.curselection()}
+        
+        # Update the selected options based on current selection
         self.selected_options = newly_selected_options
 
-        # Refresh the entry field to display selected options
+        # Refresh the text displayed in the entry widget
         self.refresh_entry()
 
     def refresh_entry(self):
-        # Update the entry field with selected options
+        # Assuming self.selected_options contains the currently selected option(s)
         sorted_list = sorted(self.selected_options, key=self.options.index)  # This ensures the options are in their original order
         selected_text = ', '.join(map(str, sorted_list))  # Creates a string from the selected options
         self.var.set(selected_text)  # Updates the entry field to show the selected options
@@ -252,6 +236,7 @@ class SpellingTestApp:
             self.selected_test_type = self.selected_test_type_var.get()
             self.words_df = self.words_df[~(self.words_df['word'].isin(self.correct_words_df['word']))]
             list(self.words_df['word_type'].unique())
+        print(self.words_df.shape[0])
 
     def update_word_type_options(self, event=None):
 
@@ -261,6 +246,7 @@ class SpellingTestApp:
         # Check for selected word type, if not set default word type as 'All'.
         if self.selected_word_type:
             word_type_list = ["All"] + list(self.words_df['word_type'].unique())
+            # print(word_type_list)
             self.word_type['values'] = word_type_list
             if self.selected_word_type in word_type_list:
                 self.word_type.current(word_type_list.index(self.selected_word_type))
@@ -553,7 +539,7 @@ class SpellingTestApp:
             # #mask only word with *
             # self.current_word_label_text.set(str(current_word_len)+" letter word \n\n     "+ ("*"*current_word_len))
             mask_sent='- Topic: '+str(current_word_type)+".\n\n- "+str(masked_chunked_sentence)+".\n\n- "+str(masked_openai_sentence)+"."
-            sentance_label = '- '+str(current_word_len)+" letter word. Remaining Words: "+str(len(self.words_list))+"\n\n"+ mask_sent
+            sentance_label = '- '+str(current_word_len)+" letter word \n\n"+ mask_sent
             self.current_word_label_text.set(sentance_label)
             self.pronounce_current_word()
         else:

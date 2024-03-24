@@ -1,0 +1,264 @@
+dict_matched_filtered_words,openai_sentence,masked_openai_sentence
+hygiene, Brushing teeth is good hygiene., brushing teeth is good *******.
+journey, We went on a long journey., we went on a long *******.
+initiative, Show initiative by starting first., show ********** by starting first.
+media, We watch TV on media., we watch tv on *****.
+conduct, Good conduct is always appreciated., good ******* is always appreciated.
+tang, Orange has a tangy taste., orange has a tangy taste.
+summative, The test was summative., the test was *********.
+bees, Bees make honey in hives., **** make honey in hives.
+ashamed, He felt ashamed of his mistake., he felt ******* of his mistake.
+os, Windows is an operating system., windows is an operating system.
+drape, The curtain will drape the window., the curtain will ***** the window.
+alure, The glittering jewels had allure., the glittering jewels had allure.
+technology, Phones use advanced technology., phones use advanced **********.
+walter, Walter is my friend's name., ****** is my friend's name.
+necklace, She wore a shiny necklace., she wore a shiny ********.
+butterfly, A butterfly has colorful wings., a ********* has colorful wings.
+succeed, Try hard and you will succeed., try hard and you will *******.
+ara, Ara is a type of bird., *** is a type of bird.
+dome, The building had a dome., the building had a ****.
+login, Enter your username to login., enter your username to *****.
+quietly, Please sit quietly during class., please sit ******* during class.
+inquiry, We made an inquiry at the office., we made an ******* at the office.
+vision, Glasses help improve vision., glasses help improve ******.
+foundation, Houses need a strong foundation., houses need a strong **********.
+label, Write your name on the label., write your name on the *****.
+teddy, She hugged her teddy bear., she hugged her ***** bear.
+experiential, Learning by doing is experiential., learning by doing is ************.
+blowing, Wind is blowing outside., wind is ******* outside.
+leam, Leam means to learn., **** means to learn.
+wite, Wite is a color., **** is a color.
+sparrow, A sparrow chirps in the garden., a ******* chirps in the garden.
+adapt, Animals adapt to their environment., animals ***** to their environment.
+pi, Pi is a mathematical constant., ** is a mathematical constant.
+personal, Keep your personal things tidy., keep your ******** things tidy.
+strive, Always strive for excellence., always ****** for excellence.
+ability, Everyone has a unique ability., everyone has a unique *******.
+ah, Ah! That feels good., **! that feels good.
+preparatory, We had a preparatory class., we had a *********** class.
+remedial, He took remedial classes to improve., he took ******** classes to improve.
+mobile, Mobile phones are convenient., ****** phones are convenient.
+puzzle, Solve the puzzle to win., solve the ****** to win.
+saved, He saved money for later., he ***** money for later.
+component, The engine has many components., the engine has many components.
+focus, Focus on your studies., ***** on your studies.
+pill, Take this pill for fever., take this **** for fever.
+drawn, He has drawn a nice picture., he has ***** a nice picture.
+bladder, The bladder stores urine., the ******* stores urine.
+platform, Stand on the platform to board., stand on the ******** to board.
+wee, Babies wake up in the wee hours., babies wake up in the *** hours.
+social, We play with our friends., we play with our friends.
+complex, Math problems can be complex., math problems can be *******.
+holistic, A healthy diet is holistic., a healthy diet is ********.
+collage, We made a collage in art class., we made a ******* in art class.
+surrounding, Trees surround our house., trees surround our house.
+international, People from many countries are international., people from many countries are *************.
+technical, Fixing machines requires technical skills., fixing machines requires ********* skills.
+hood, The car has a hood., the car has a ****.
+dose, Take one dose of medicine., take one **** of medicine.
+infer, We infer the answer from clues., we ***** the answer from clues.
+emergency, Call 911 in an emergency., call 911 in an *********.
+crosscutting, Scissors are used for crosscutting., scissors are used for ************.
+management, Good management leads to success., good ********** leads to success.
+cycling, I love cycling in the park., i love ******* in the park.
+erect, The flagpole stands erect., the flagpole stands *****.
+varied, The menu has varied options., the menu has ****** options.
+performance, She gave a great performance., she gave a great ***********.
+action," Run fast, it's action time."," run fast, it's ****** time."
+indispensable, Water is indispensable for life., water is ************* for life.
+feathered, Birds have feathered wings., birds have ********* wings.
+hub, The city is a hub of activity., the city is a *** of activity.
+oneself, You should be yourself., you should be yourself.
+border, The fence marks the border., the fence marks the ******.
+curricular, Math is part of the curricular., math is part of the **********.
+pant, The dog pants after running., the dog pants after running.
+error, Correct the error in your homework., correct the ***** in your homework.
+pact, They made a pact to be friends forever., they made a **** to be friends forever.
+national, Our flag represents our national identity., our flag represents our ******** identity.
+deduce, We deduce the answer from clues., we ****** the answer from clues.
+peed, The dog peed on the tree., the dog **** on the tree.
+lucid, His explanation was clear and lucid., his explanation was clear and *****.
+teaching, The teacher is teaching us math., the teacher is ******** us math.
+ureter, The ureter carries urine from kidneys., the ****** carries urine from kidneys.
+worse, I feel worse today., i feel ***** today.
+windpipe, The windpipe helps us breathe., the ******** helps us breathe.
+gift, She received a gift on her birthday., she received a **** on her birthday.
+enema, Doctors sometimes give enemas., doctors sometimes give enemas.
+sot, A sot is a person who drinks too much., a *** is a person who drinks too much.
+hop, The rabbit likes to hop around., the rabbit likes to *** around.
+tick, A tick is a small insect., a **** is a small insect.
+workbook, We complete exercises in our workbook., we complete exercises in our ********.
+feather, I found a feather on the ground., i found a ******* on the ground.
+biting, Be careful of biting dogs., be careful of ****** dogs.
+creative, Drawing is a creative activity., drawing is a ******** activity.
+affective, Hugs have an affective impact., hugs have an ********* impact.
+ethics, Good behavior is based on ethics., good behavior is based on ******.
+approach, Let's take a different approach., let's take a different ********.
+gaz, The gazelle runs in the field., the gazelle runs in the field.
+assets, Money and property are assets., money and property are ******.
+speaking, She's speaking on the phone., she's ******** on the phone.
+clarity, He explained it with clarity., he explained it with *******.
+manageable, My homework is manageable today., my homework is ********** today.
+yo," Yo, I can rap too."," **, i can rap too."
+cored, Mom cored the apple for me., mom ***** the apple for me.
+education, School is important for education., school is important for *********.
+ewe, The ewe is in the field., the *** is in the field.
+progress, She shows progress in reading., she shows ******** in reading.
+storybook, I love this storybook., i love this *********.
+peacock, A peacock has colorful feathers., a ******* has colorful feathers.
+awe, The magic show left us in awe., the magic show left us in ***.
+advancing, He is advancing in math., he is ********* in math.
+om," We say ""om"" in yoga."," we say ""**"" in yoga."
+engage, I engage in learning., i ****** in learning.
+yoga, We do yoga in gym class., we do **** in gym class.
+achieve, You can achieve your goals., you can ******* your goals.
+thereby, We study and thereby learn., we study and ******* learn.
+completion, Completion of homework feels good., ********** of homework feels good.
+differentiate, Can you differentiate the shapes?, can you ************* the shapes?
+ton, That looks like a ton of candy., that looks like a *** of candy.
+anne, Anne is my friend., **** is my friend.
+brad, Brad kicked the ball., **** kicked the ball.
+schema, My teacher talked about a schema., my teacher talked about a ******.
+bare, The tree is bare in winter., the tree is **** in winter.
+unity, Our team has unity., our team has *****.
+pad, I draw on my pad., i draw on my ***.
+mab, Mab is a name in a story., *** is a name in a story.
+hypothesis, We made a hypothesis in science., we made a ********** in science.
+cane, Grandpa walks with a cane., grandpa walks with a ****.
+straw, I drink juice with a straw., i drink juice with a *****.
+independently, I did the puzzle independently., i did the puzzle *************.
+saving, I am saving my allowance., i am ****** my allowance.
+manner, She has a kind manner., she has a kind ******.
+toy, My favorite toy is a bear., my favorite *** is a bear.
+jenny, Jenny and I play together., ***** and i play together.
+creativity, Painting shows your creativity., painting shows your **********.
+lain, The cat has lain in the sun., the cat has **** in the sun.
+secure, Wear a helmet to be secure., wear a helmet to be ******.
+productivity, Being organized improves productivity., being organized improves ************.
+carter, Carter found a bug., ****** found a bug.
+rare, It's rare to see a blue moon., it's **** to see a blue moon.
+educational, This game is educational., this game is ***********.
+enact, We enact a play in class., we ***** a play in class.
+identity, My badge shows my identity., my badge shows my ********.
+weave, Grandma can weave a basket., grandma can ***** a basket.
+safety, Always think about safety., always think about ******.
+revise, Let's revise our essays., let's ****** our essays.
+badly, He felt badly after falling., he felt ***** after falling.
+breakfast, I eat cereal for breakfast., i eat cereal for *********.
+experimentation, Science is fun with experimentation., science is fun with ***************.
+ods," ""Odds"" could be a typo; a sentence might be ""The odds are good."""," ""odds"" could be a typo; a sentence might be ""the odds are good."""
+increasingly, It's increasingly cold outside., it's ************ cold outside.
+significant, The test had significant questions., the test had *********** questions.
+successfully, I successfully rode my bike., i ************ rode my bike.
+comprehension, Reading improves your comprehension., reading improves your *************.
+cur, A stray cur followed me home., a stray *** followed me home.
+option, You have the option to choose., you have the ****** to choose.
+android, My dad uses an android phone., my dad uses an ******* phone.
+unscramble, Can you unscramble these letters?, can you ********** these letters?
+id, I showed my ID at the library., i showed my ** at the library.
+grade, I got a good grade on the test., i got a good ***** on the test.
+veal, Mom cooked veal for dinner., mom cooked **** for dinner.
+suite, We stayed in a hotel suite., we stayed in a hotel *****.
+aid, I offered aid to my friend., i offered *** to my friend.
+magnitude, The magnitude of the problem was huge., the ********* of the problem was huge.
+offering, The church is collecting offerings., the church is collecting offerings.
+regular, He visits the park on a regular basis., he visits the park on a ******* basis.
+bite, Don't bite your nails., don't **** your nails.
+grandfather, My grandfather tells great stories., my *********** tells great stories.
+geared, He is geared up for the trip., he is ****** up for the trip.
+siena, Siena is a color or place in a story., ***** is a color or place in a story.
+anus, The vet checked the dog's anus., the vet checked the dog's ****.
+simpler, The puzzle is simpler than it looks., the puzzle is ******* than it looks.
+understanding, She showed understanding of the lesson., she showed ************* of the lesson.
+survey, We did a survey in class., we did a ****** in class.
+data, We collected data for a project., we collected **** for a project.
+tongs, Mom used tongs to flip the chicken., mom used ***** to flip the chicken.
+crossword, Grandpa enjoys doing the crossword puzzle., grandpa enjoys doing the ********* puzzle.
+alter, You can alter your decision., you can ***** your decision.
+guilty, The dog looked guilty after eating the cake., the dog looked ****** after eating the cake.
+swallow, Don't forget to swallow your medicine., don't forget to ******* your medicine.
+pace, Keep a good pace while running., keep a good **** while running.
+beck, I came at my friend's beck., i came at my friend's ****.
+food,  I like food a lot.,  i like **** a lot.
+soap, Use soap to wash your hands., use **** to wash your hands.
+sort, Let's sort the toys by color., let's **** the toys by color.
+assign, The teacher will assign homework., the teacher will ****** homework.
+breakdown, Dad had a breakdown of the car's cost., dad had a ********* of the car's cost.
+swimming, Swimming is fun in summer., ******** is fun in summer.
+customs, We learned about different customs in school., we learned about different ******* in school.
+smartly, He dressed smartly for the interview., he dressed ******* for the interview.
+audit, Dad went to an audit at work., dad went to an ***** at work.
+formative, Quizzes are formative assessments., quizzes are ********* assessments.
+hew, We hew wood for the fireplace., we *** wood for the fireplace.
+scenery, The mountain scenery is beautiful., the mountain ******* is beautiful.
+ward, He was in the hospital ward., he was in the hospital ****.
+distinguish, Can you distinguish between these colors?, can you *********** between these colors?
+acetone, Mom uses acetone to remove nail polish., mom uses ******* to remove nail polish.
+background, The artist painted a blue background., the artist painted a blue **********.
+lifelong, She has a lifelong love for learning., she has a ******** love for learning.
+classroom, Our classroom is on the second floor., our ********* is on the second floor.
+psychomotor, My dance class improves psychomotor skills., my dance class improves *********** skills.
+bouquet, Mom received a beautiful bouquet., mom received a beautiful *******.
+hoon," ""Hoon"" might be complex; can refer to fast driving."," ""****"" might be complex; can refer to fast driving."
+analytics, Dad uses analytics at work., dad uses ********* at work.
+injury, I got an injury during soccer., i got an ****** during soccer.
+FALSE, Saying the sky is green is false., saying the sky is green is *****.
+seer, A seer can predict the future., a **** can predict the future.
+riddle, I love solving a good riddle., i love solving a good ******.
+birthday, My birthday party is on Saturday., my ******** party is on saturday.
+becoming, She is becoming a great artist., she is ******** a great artist.
+conceptual, We learned conceptual art in class., we learned ********** art in class.
+efficiently, Mom packed the suitcase efficiently., mom packed the suitcase ***********.
+manage, I can manage my own homework., i can ****** my own homework.
+curriculum, Our school follows a new curriculum., our school follows a new **********.
+collaboration, Collaboration makes the project easier., ************* makes the project easier.
+saga, Grandpa told us an ancient saga., grandpa told us an ancient ****.
+net, We caught butterflies with a net., we caught butterflies with a ***.
+usage, The teacher explained the usage of words., the teacher explained the ***** of words.
+bath, I take a bath before bed., i take a **** before bed.
+blended, We blended fruits for a smoothie., we ******* fruits for a smoothie.
+odd, I saw an odd number of ducks., i saw an *** number of ducks.
+irrespective, We play outside irrespective of the weather., we play outside ************ of the weather.
+nave, The church nave was very large., the church **** was very large.
+improvement, I see improvement in your writing., i see *********** in your writing.
+commune, We will commune with nature on our hike., we will ******* with nature on our hike.
+practical, We did practical experiments in science., we did ********* experiments in science.
+watch, I will watch a movie tonight., i will ***** a movie tonight.
+beautifully, She sang beautifully in the concert., she sang *********** in the concert.
+pride, I take pride in my artwork., i take ***** in my artwork.
+breeding, Dad talked about dog breeding., dad talked about dog ********.
+never, I never saw a shooting star., i ***** saw a shooting star.
+insert, Please insert your paper here., please ****** your paper here.
+precious, My teddy bear is precious to me., my teddy bear is ******** to me.
+salad, Mom made a cucumber salad., mom made a cucumber *****.
+gen," ""Gen"" can refer to generation or general."," ""***"" can refer to ***eration or ***eral."
+throw, I can throw the ball far., i can ***** the ball far.
+inflate, We inflate balloons for parties., we ******* balloons for parties.
+telling, Telling stories is fun at night., ******* stories is fun at night.
+theft, Theft is taking something that's not yours., ***** is taking something that's not yours.
+lath," ""Lath"" might be complex; could refer to construction."," ""****"" might be complex; could refer to construction."
+tongue, My cat's tongue feels rough., my cat's ****** feels rough.
+dependency, Baby birds have a dependency on their mom., baby birds have a ********** on their mom.
+promote, We promote kindness in our class., we ******* kindness in our class.
+wreak, The storm can wreak havoc., the storm can ***** havoc.
+refer, Please refer to the book page., please ***** to the book page.
+assist, Can you assist me with this puzzle?, can you ****** me with this puzzle?
+bead, I made a necklace with a bead., i made a necklace with a ****.
+improve, I want to improve my drawing., i want to ******* my drawing.
+diversity, Our school celebrates diversity., our school celebrates *********.
+peace, I wish for world peace., i wish for world *****.
+june, My brother's birthday is in June., my brother's birthday is in ****.
+junk, We should clean up the junk., we should clean up the ****.
+TRUE, It is true that water is wet., it is **** that water is wet.
+locality, Our locality has a new park., our ******** has a new park.
+meaningful, The movie had a meaningful message., the movie had a ********** message.
+park, We play at the park every day., we play at the **** every day.
+allocate, Mom will allocate chores to us., mom will ******** chores to us.
+cucumber, I like cucumber in my salad., i like ******** in my salad.
+frame, We put the picture in a frame., we put the picture in a *****.
+actual, The actual story was different., the ****** story was different.
+generator, The generator powers our house., the ********* powers our house.
+homework, I do my homework after school., i do my ******** after school.
+ha," ""Ha"" can express surprise or laughter."," ""**"" can express surprise or laughter."
+access, I have access to many books., i have ****** to many books.

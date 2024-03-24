@@ -556,7 +556,7 @@ class SpellingTestApp:
             # #mask only word with *
             # self.current_word_label_text.set(str(current_word_len)+" letter word \n\n     "+ ("*"*current_word_len))
             mask_sent='- Topic: '+str(current_word_type)+".\n\n- "+str(masked_chunked_sentence)+".\n\n- "+str(masked_openai_sentence)+"."
-            sentance_label = '- '+str(current_word_len)+" letter word \n\n"+ mask_sent
+            sentance_label = '- '+str(current_word_len)+" letter word. Remaining Words: "+str(len(self.words_list))+"\n\n"+ mask_sent
             self.current_word_label_text.set(sentance_label)
             self.pronounce_current_word()
         else:

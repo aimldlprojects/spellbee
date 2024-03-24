@@ -1,0 +1,56 @@
+dict_matched_filtered_words,openai_sentence,masked_openai_sentence
+aide, The teacher's aide helps us., the teacher's **** helps us.
+andhra, Andhra Pradesh is in India., ****** pradesh is in india.
+athlete, She is a talented athlete., she is a talented *******.
+bitter, The medicine tasted bitter., the medicine tasted ******.
+bone, The dog chewed on a bone., the dog chewed on a ****.
+carton, Milk comes in a carton., milk comes in a ******.
+chill, It's chilly outside today., it's chilly outside today.
+coastal, We live near the coastal area., we live near the ******* area.
+code, The secret code is 1234., the secret **** is 1234.
+consuming, Too much sugar is consuming., too much sugar is *********.
+culinary, Culinary skills involve cooking., ******** skills involve cooking.
+cumin, Cumin adds flavor to food., ***** adds flavor to food.
+distinct, Each animal has distinct features., each animal has ******** features.
+edible, Apples are edible fruits., apples are ****** fruits.
+elderly, The elderly man needs assistance., the ******* man needs assistance.
+eat, Let's eat lunch., let's *** lunch.
+evaluate, The teacher will evaluate our work., the teacher will ******** our work.
+fan, Turn on the fan., turn on the ***.
+freshly, The bread smells freshly baked., the bread smells ******* baked.
+germinate, Seeds germinate into plants., seeds ********* into plants.
+incredible, The view from the mountain was incredible., the view from the mountain was **********.
+injured, He got injured playing soccer., he got ******* playing soccer.
+josh, Josh is excited about his birthday., **** is excited about his birthday.
+kitchen, Mom cooks in the kitchen., mom cooks in the *******.
+lots, I have lots of toys., i have **** of toys.
+make, Let's make a cake., let's **** a cake.
+mary, Mary is my friend., **** is my friend.
+moist, The soil feels moist after rain., the soil feels ***** after rain.
+nancy, Nancy is our neighbor., ***** is our neighbor.
+necessity, Water is a necessity for life., water is a ********* for life.
+newspaper, Dad reads the newspaper every morning., dad reads the ********* every morning.
+nina, Nina is my sister's name., **** is my sister's name.
+oily, French fries are oily., french fries are ****.
+pack, Let's pack for our trip., let's **** for our trip.
+papaya, Papaya is a tropical fruit., ****** is a tropical fruit.
+patch, I put a patch on my jeans., i put a ***** on my jeans.
+pleasant, The weather is pleasant today., the weather is ******** today.
+prefer, I prefer chocolate over vanilla., i ****** chocolate over vanilla.
+rotten, Throw away rotten fruit., throw away ****** fruit.
+saw," Could use as ""Saw"" "," could use as ""***"" "
+safflower, Safflower oil is healthy., ********* oil is healthy.
+scan, I scan the pages for pictures., i **** the pages for pictures.
+scatter, Scatter the seeds in the garden., ******* the seeds in the garden.
+sesame, Sesame seeds are tiny., ****** seeds are tiny.
+slimy, Snails leave a slimy trail., snails leave a ***** trail.
+sour, Lemons taste sour., lemons taste ****.
+spoil, Don't let food spoil., don't let food *****.
+stale, Bread becomes stale if left out., bread becomes ***** if left out.
+tablespoon, Add one tablespoon of sugar., add one ********** of sugar.
+territory, Birds protect their territory., birds protect their *********.
+terry, Terry is my cousin's name., ***** is my cousin's name.
+union, The union helps workers., the ***** helps workers.
+unique, Each snowflake is unique., each snowflake is ******.
+vomiting, Eating too much can cause vomiting., eating too much can cause ********.
+why, Why is the sky blue?, *** is the sky blue?
