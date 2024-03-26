@@ -205,6 +205,9 @@ class SpellingTestApp:
             # If the file doesn't exist, there are no words to exclude
             self.incorrect_words_df = pd.DataFrame(columns=cols)
 
+        self.total_correct_count = self.correct_words_df.shape[0]
+        self.total_wrong_count = self.incorrect_words_df.shape[0]
+
     def update_words_based_on_test_type(self, event=None):
 
         self.update_words_based_on_user()
@@ -470,7 +473,6 @@ class SpellingTestApp:
     def start_test(self):
         self.correct_count=0
         self.wrong_count=0
-        
         # Check if a user ID is selected
         if self.selected_user == 'Select User' or self.selected_user == '':
             messagebox.showerror("User ID Required", "Please select a User ID to start the test.")
