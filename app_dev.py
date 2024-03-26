@@ -24,11 +24,11 @@ class MultiSelectDropdown:
 
         # Create the entry widget to display selected options
         self.entry = ttk.Entry(self.parent, textvariable=self.var, **kwargs)
-        self.entry.grid(row=5, column=1, padx=(0, 9), pady=5, sticky="ew")
+        self.entry.grid(row=6, column=1, padx=(0, 9), pady=5, sticky="ew")
 
         # Create a button with a dropdown icon
         self.dropdown_button = ttk.Button(self.parent, text=u"\u25BE", command=self.toggle_dropdown, width=1)
-        self.dropdown_button.grid(row=5, column=1, padx=(120, 0), pady=1)  # Place in column 3
+        self.dropdown_button.grid(row=6, column=1, padx=(120, 0), pady=1)  # Place in column 3
 
         # Resize the dropdown button
         self.dropdown_button.config(style='Padded.TButton', padding=(0, 0, 0, 0))  # Adjust width and font size as needed
@@ -156,7 +156,8 @@ class SpellingTestApp:
         self.wrong_count = 0
         self.total_correct_count = 0
         self.total_wrong_count = 0
-        self.auto_advance = tk.BooleanVar(value=True)  # Default to not automatically advancing
+        self.auto_advance = tk.BooleanVar(value=True)  # Default to not automatically advancing.
+        self.auto_pronounce_sentence = tk.BooleanVar(value=True)  # Default to not automatically pronounce sentence.
         self.auto_hide_test_options = tk.BooleanVar(value=False)
         
         # Setting default variables
@@ -310,7 +311,10 @@ class SpellingTestApp:
         else:
             current_sentence = "No sentence found"
 
-        tts = gTTS(text=current_word + '. '+ current_sentence, lang='en')
+        if self.auto_pronounce_sentence.get():
+            tts = gTTS(text=current_word + '. '+ current_sentence, lang='en')
+        else:
+            tts = gTTS(text=current_word, lang='en')
 
         with tempfile.NamedTemporaryFile(delete=True) as fp:
             temp_filename = fp.name + '.mp3'
@@ -372,11 +376,22 @@ class SpellingTestApp:
         )
         auto_advance_checkbox.grid(row=1, column=0, columnspan=2, sticky="w", padx=10, pady=5)
 
+        # Auto pronounce sentence checkbox
+        auto_pronounce_sentence_checkbox = ttk.Checkbutton(
+            self.test_options_frame,
+            text="Pronounce Sentence",
+            variable=self.auto_pronounce_sentence,
+            onvalue=True,
+            offvalue=False
+        )
+        auto_pronounce_sentence_checkbox.grid(row=2, column=0, columnspan=2, sticky="w", padx=10, pady=5)
+
+
         # Combobox for selecting user
         user_id_label = ttk.Label(self.test_options_frame, text="User ID:", font=('Helvetica', 10))
-        user_id_label.grid(row=2, column=0, sticky="w", padx=(5, 2))
+        user_id_label.grid(row=3, column=0, sticky="w", padx=(5, 2))
         self.user_id_options = ttk.Combobox(self.test_options_frame, textvariable=self.selected_user_var, values=self.existing_user_ids, state="readonly")
-        self.user_id_options.grid(row=2, column=1, padx=(0, 5), pady=5)
+        self.user_id_options.grid(row=3, column=1, padx=(0, 5), pady=5)
         # Set default user to Bhavi
         self.default_user_index = self.existing_user_ids.index("Bhavi") if "Bhavi" in self.existing_user_ids else 0
         self.user_id_options.current(self.default_user_index)  # Set Bhavi as default if exists, otherwise first user
@@ -384,9 +399,9 @@ class SpellingTestApp:
 
         # Combobox for selecting test type
         test_type_label = ttk.Label(self.test_options_frame, text="Test Type:", font=('Helvetica', 10))
-        test_type_label.grid(row=3, column=0, sticky="w", padx=(5, 2))
+        test_type_label.grid(row=4, column=0, sticky="w", padx=(5, 2))
         self.test_type = ttk.Combobox(self.test_options_frame, textvariable=self.selected_test_type_var, values=self.test_type_values, state="readonly")
-        self.test_type.grid(row=3, column=1, padx=(0, 5), pady=5)
+        self.test_type.grid(row=4, column=1, padx=(0, 5), pady=5)
         # Set default user to Unattended Words
         self.default_test_type_index = self.test_type_values.index("Unattended Words") if "Unattended Words" in self.test_type_values else 0
         self.test_type.current(self.default_test_type_index)  # Set Bhavi as default if exists, otherwise first user
@@ -394,9 +409,9 @@ class SpellingTestApp:
 
         # Combobox for selecting word type
         word_type_label = ttk.Label(self.test_options_frame, text="Word Type:", font=('Helvetica', 10))
-        word_type_label.grid(row=4, column=0, sticky="w", padx=(5, 2))
+        word_type_label.grid(row=5, column=0, sticky="w", padx=(5, 2))
         self.word_type = ttk.Combobox(self.test_options_frame, textvariable=self.selected_word_type_var, values=["All"], state="readonly")
-        self.word_type.grid(row=4, column=1, padx=(0, 5), pady=5)
+        self.word_type.grid(row=5, column=1, padx=(0, 5), pady=5)
 
         # Set default user to Unattended Words
         self.default_word_type_index = self.word_type_values.index("All") if "All" in self.test_type_values else 0
@@ -405,7 +420,7 @@ class SpellingTestApp:
 
         # length options
         length_options_label = ttk.Label(self.test_options_frame, text="Word Length:", font=('Helvetica', 10))
-        length_options_label.grid(row=5, column=0, sticky="w", padx=(5, 2))
+        length_options_label.grid(row=6, column=0, sticky="w", padx=(5, 2))
 
         # Define your length options, assuming you want lengths from 1 to 10
         self.length_options = ["All"] + list(range(1, 11))
@@ -450,7 +465,7 @@ class SpellingTestApp:
         current_word_label.pack()
 
         # Start test button
-        ttk.Button(self.test_options_frame, text="Start Test", command=self.start_test).grid(row=6, column=0, padx=5, pady=5)
+        ttk.Button(self.test_options_frame, text="Start Test", command=self.start_test).grid(row=7, column=0, padx=5, pady=5)
 
         # User input entry
         user_input_entry = ttk.Entry(main_frame, textvariable=self.user_input, font=('Helvetica', 14))
@@ -479,7 +494,7 @@ class SpellingTestApp:
             self.test_options_frame.grid_remove()
         else:
             # Show test options
-            self.test_options_frame.grid(row=5, column=0, columnspan=2, pady=5, sticky="w")
+            self.test_options_frame.grid(row=0, column=0, columnspan=2, pady=5, sticky="w")
 
     def start_test(self):
         self.correct_count=0
