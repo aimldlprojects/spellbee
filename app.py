@@ -144,6 +144,7 @@ class SpellingTestApp:
         self.words_list = []
         self.current_word = tk.StringVar()
         self.current_word_label_text = tk.StringVar()
+        self.current_sentence = tk.StringVar()
         self.user_input = tk.StringVar()
 
 
@@ -300,7 +301,14 @@ class SpellingTestApp:
 
     def pronounce_current_word(self):
         current_word = self.current_word.get()  # Assuming this is how you access the word to be spelled
-        tts = gTTS(text=current_word, lang='en')
+        # "Hear Word" button in the dynamic frame
+        if self.current_sentence:
+            current_sentence = self.current_sentence.get()
+        else:
+            current_sentence = "No sentence found"
+
+        tts = gTTS(text=current_word + '. '+ current_sentence, lang='en')
+
         with tempfile.NamedTemporaryFile(delete=True) as fp:
             temp_filename = fp.name + '.mp3'
             tts.save(temp_filename)
@@ -473,6 +481,7 @@ class SpellingTestApp:
     def start_test(self):
         self.correct_count=0
         self.wrong_count=0
+
         # Check if a user ID is selected
         if self.selected_user == 'Select User' or self.selected_user == '':
             messagebox.showerror("User ID Required", "Please select a User ID to start the test.")
@@ -533,14 +542,15 @@ class SpellingTestApp:
                 pass
             self.status_message = ttk.Label(self.status_frame, text=f"\n\n", font=('Helvetica', 16))
             self.status_message.pack()
-            
+
             self.current_word.set(random.choice(self.words_list))
             current_word_len = len(list(self.current_word.get()))
 
-            # Getting masked sentance examples 
+            # Getting masked sentence examples 
             masked_chunked_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"masked_chunked_sentence"]
             masked_openai_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"masked_openai_sentence"]
-            
+            openai_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"openai_sentence"]
+
             if not masked_chunked_sentence_df.empty:
                 masked_chunked_sentence = masked_chunked_sentence_df.iloc[0]
             else:
@@ -548,15 +558,19 @@ class SpellingTestApp:
 
             if not masked_openai_sentence_df.empty:
                 masked_openai_sentence = masked_openai_sentence_df.iloc[0]
+                openai_sentence = openai_sentence_df.iloc[0]
             else:
                 masked_openai_sentence = "-"
-            
+                openai_sentence = "No sentence found"
+
+            self.current_sentence.set(openai_sentence)
+
             current_word_type = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"word_type"].iloc[0]
             # #mask only word with *
             # self.current_word_label_text.set(str(current_word_len)+" letter word \n\n     "+ ("*"*current_word_len))
             mask_sent='- Topic: '+str(current_word_type)+".\n\n- "+str(masked_chunked_sentence)+".\n\n- "+str(masked_openai_sentence)+"."
-            sentance_label = '- '+str(current_word_len)+" letter word. Remaining Words: "+str(len(self.words_list))+"\n\n"+ mask_sent
-            self.current_word_label_text.set(sentance_label)
+            sentence_label = '- '+str(current_word_len)+" letter word. Remaining Words: "+str(len(self.words_list))+"\n\n"+ mask_sent
+            self.current_word_label_text.set(sentence_label)
             self.pronounce_current_word()
         else:
             self.current_word.set("No more words for the test")
