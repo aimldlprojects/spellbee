@@ -150,7 +150,6 @@ class SpellingTestApp:
         self.current_sentence = tk.StringVar()
         self.user_input = tk.StringVar()
 
-
         # Initilising the stats parameters 
         self.correct_count = 0
         self.wrong_count = 0
@@ -209,6 +208,11 @@ class SpellingTestApp:
         except FileNotFoundError:
             # If the file doesn't exist, there are no words to exclude
             self.incorrect_words_df = pd.DataFrame(columns=cols)
+        try:
+            self.review_words_df = pd.read_csv("review_words.csv", names=['review_word', 'word_type', 'chunked_sentence', 'example_sentence','openai_sentence'])
+        except FileNotFoundError:
+            # If the file doesn't exist, there are no words to exclude
+            self.review_words_df = pd.DataFrame(columns=['review_word', 'word_type', 'chunked_sentence', 'example_sentence','openai_sentence'])
 
         self.total_correct_count = self.correct_words_df.shape[0]
         self.total_wrong_count = self.incorrect_words_df.shape[0]
@@ -216,7 +220,9 @@ class SpellingTestApp:
     def update_words_based_on_test_type(self, event=None):
 
         self.update_words_based_on_user()
-        # Filterin the DF based on the testtype
+        # Removing review words
+        self.words_df = self.words_df[~(self.words_df['word'].isin(self.review_words_df['review_word']))]
+
         # Unattended words means: not attempted and incorrect words
         self.selected_test_type = self.selected_test_type_var.get()
         if  self.selected_test_type != '' and  self.selected_test_type != None:
@@ -480,7 +486,10 @@ class SpellingTestApp:
         ttk.Button(button_frame, text="Check", command=lambda: [self.check_spelling()]).pack(side=tk.LEFT, padx=5)
 
         # Next word button with delayed pronunciation
-        ttk.Button(button_frame, text="Next Word", command=lambda: [self.next_word()]).pack(side=tk.LEFT)
+        ttk.Button(button_frame, text="Next Word", command=lambda: [self.next_word()]).pack(side=tk.LEFT, padx=5)
+
+        # Review word button to delete or correct the word
+        ttk.Button(button_frame, text="Review Word", command=lambda: [self.review_del_word()]).pack(side=tk.LEFT, padx=5)
 
         # Display stats
         current_scores_text = f"Current Test Scores: Correct - {self.correct_count},      Wrong - {self.wrong_count}"
@@ -567,6 +576,9 @@ class SpellingTestApp:
             # Getting masked sentence examples 
             masked_chunked_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"masked_chunked_sentence"]
             masked_openai_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"masked_openai_sentence"]
+            word_type_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"word_type"]
+            chunked_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"chunked_sentence"]
+            example_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"example_sentence"]
             openai_sentence_df = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"openai_sentence"]
 
             if not masked_chunked_sentence_df.empty:
@@ -576,17 +588,35 @@ class SpellingTestApp:
 
             if not masked_openai_sentence_df.empty:
                 masked_openai_sentence = masked_openai_sentence_df.iloc[0]
-                openai_sentence = openai_sentence_df.iloc[0]
             else:
                 masked_openai_sentence = "-"
-                openai_sentence = "No sentence found"
 
-            self.current_sentence.set(openai_sentence)
+            if not openai_sentence_df.empty:
+                self.openai_sentence = openai_sentence_df.iloc[0]
+            else:
+                self.openai_sentence = "No sentence found"
 
-            current_word_type = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"word_type"].iloc[0]
+            if not word_type_df.empty:
+                self.current_word_type = word_type_df.iloc[0]
+            else:
+                self.current_word_type = "No word type found"
+
+            if not chunked_sentence_df.empty:
+                self.chunked_sentence = chunked_sentence_df.iloc[0]
+            else:
+                self.chunked_sentence = "No sentence found"
+
+            if not example_sentence_df.empty:
+                self.example_sentence = example_sentence_df.iloc[0]
+            else:
+                self.example_sentence = "No sentence found"
+
+            self.current_sentence.set(self.openai_sentence)
+
+            # current_word_type = self.sel_words_df.loc[self.sel_words_df['word']==self.current_word.get(),"word_type"].iloc[0]
             # #mask only word with *
             # self.current_word_label_text.set(str(current_word_len)+" letter word \n\n     "+ ("*"*current_word_len))
-            mask_sent='- Topic: '+str(current_word_type)+".\n\n- "+str(masked_chunked_sentence)+".\n\n- "+str(masked_openai_sentence)+"."
+            mask_sent='- Topic: '+str(self.current_word_type)+".\n\n- "+str(masked_chunked_sentence)+".\n\n- "+str(masked_openai_sentence)+"."
             sentence_label = '- '+str(current_word_len)+" letter word. Remaining Words: "+str(len(self.words_list))+"\n\n"+ mask_sent
             self.current_word_label_text.set(sentence_label)
             self.pronounce_current_word()
@@ -631,6 +661,15 @@ class SpellingTestApp:
         else:
             # Do not automatically advance to the next word
             pass
+
+    def review_del_word(self):
+        review_word = self.current_word.get()
+        if review_word in self.words_list:
+            self.words_list.remove(review_word)
+            filename = "review_words.csv"
+            self.sel_words_df
+            pd.DataFrame({'review_word': [review_word], 'word_type': [self.selected_word_type], 'chunked_sentence': [self.chunked_sentence], 'example_sentence': [self.example_sentence], 'openai_sentence': [self.openai_sentence]}).to_csv(filename, mode='a', header=False, index=False)
+
 
 
 # The main part of the program
