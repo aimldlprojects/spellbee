@@ -196,7 +196,7 @@ class SpellingTestApp:
         self.incorrect_words_filename = f"user_{self.selected_user}_incorrect_words.csv"
 
         # Specify the column names since the CSV file is being appended without headers
-        cols = ['user_id', 'word', 'datetime']
+        cols = ['user_id', 'word', 'datetime', 'word_type']
         # Read the CSV file into a DataFrame with the correct column names
         try:
             self.correct_words_df = pd.read_csv(self.correct_words_filename, names=cols)
@@ -209,10 +209,10 @@ class SpellingTestApp:
             # If the file doesn't exist, there are no words to exclude
             self.incorrect_words_df = pd.DataFrame(columns=cols)
         try:
-            self.review_words_df = pd.read_csv("review_words.csv", names=['review_word', 'word_type', 'chunked_sentence', 'example_sentence','openai_sentence'])
+            self.review_words_df = pd.read_csv("review_words.csv")
         except FileNotFoundError:
             # If the file doesn't exist, there are no words to exclude
-            self.review_words_df = pd.DataFrame(columns=['review_word', 'word_type', 'chunked_sentence', 'example_sentence','openai_sentence'])
+            self.review_words_df = pd.DataFrame(columns=['user', 'review_word', 'word_type', 'chunked_sentence', 'example_sentence','openai_sentence'])
 
         self.total_correct_count = self.correct_words_df.shape[0]
         self.total_wrong_count = self.incorrect_words_df.shape[0]
@@ -546,14 +546,14 @@ class SpellingTestApp:
             self.update_status("Correct!\n\n ", "green", 500)
             #save file for each user
             filename = f"user_{self.selected_user}_correct_words.csv"
-            pd.DataFrame({'user_id': [self.selected_user], 'word': [correct_word], 'datetime': [current_datetime]}).to_csv(filename, mode='a', header=False, index=False)
+            pd.DataFrame({'user_id': [self.selected_user], 'word': [correct_word], 'datetime': [current_datetime], 'word_type':[self.current_word_type]}).to_csv(filename, mode='a', header=False, index=False)
         else:
             self.wrong_count += 1
             self.total_wrong_count += 1  # Increment total wrong count
             self.update_status(f"Wrong! Correct spelling is: \n\t   {correct_word}\n", "red", 5000)
             #save file for each user
             filename = f"user_{self.selected_user}_incorrect_words.csv"
-            pd.DataFrame({'user_id': [self.selected_user], 'word': [correct_word], 'datetime': [current_datetime]}).to_csv(filename, mode='a', header=False, index=False)
+            pd.DataFrame({'user_id': [self.selected_user], 'word': [correct_word], 'datetime': [current_datetime], 'word_type':[self.current_word_type]}).to_csv(filename, mode='a', header=False, index=False)
 
     def next_word(self):
         # Implementation remains the same as previous
@@ -667,7 +667,7 @@ class SpellingTestApp:
         if review_word in self.words_list:
             self.words_list.remove(review_word)
             filename = "review_words.csv"
-            self.sel_words_df
+            # self.sel_words_df
             pd.DataFrame({'review_word': [review_word], 'word_type': [self.selected_word_type], 'chunked_sentence': [self.chunked_sentence], 'example_sentence': [self.example_sentence], 'openai_sentence': [self.openai_sentence]}).to_csv(filename, mode='a', header=False, index=False)
 
 

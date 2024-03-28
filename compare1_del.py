@@ -1,90 +1,59 @@
-import tkinter as tk
-from tkinter import ttk
+# List top 10 wrongly spelled words
+# Initialize DataFrame to store top 10 wrongly spelled words
+top_wrong_words_df = pd.DataFrame(columns=['user', 'word_type', 'word_length', 'word', 'incorrect_attempt_count', 'correct_attempt_count'])
 
-class MultiSelectDropdown:
-    def __init__(self, parent, options, **kwargs):
-        self.parent = parent
-        self.options = options
-        self.selected_options = {self.options[0]} if options else set()
 
-        self.var = tk.StringVar()
+for user in users:
+    df = words_df[(words_df['user']==user) | (words_df['user']=='User')].reset_index(drop=True)
+    df = df[~df['word'].isin(remove_unwanted_words_df['unwanted_words'])]
+    df = df[~df['word'].isin(review_words_df['review_word'])]
+    df['word_len'] = df['word'].apply(len)
+    word_type_list = list(df['word_type'].unique())
+    unique_lengths = set(df['word'].apply(len))
+    unique_lengths_list = list(unique_lengths)
+    # Merge incorrect_words_df with df to add word_type
+    incorrect_words_df_wrd_type = pd.merge(incorrect_words_df, df[['word', 'user', 'word_type', 'word_len']], on=['word', 'user'], how='left')
+    correct_words_df_wrd_type = pd.merge(correct_words_df, df[['word', 'user', 'word_type', 'word_len']], on=['word', 'user'], how='left')
 
-        self.entry = ttk.Entry(self.parent, textvariable=self.var, **kwargs)
-        self.entry.grid(row=5, column=1, padx=(0, 9), pady=5, sticky="ew")
+    # Initialize DataFrame to store results for the current user
+    user_wrong_words_df = pd.DataFrame(columns=['user', 'word_type', 'word_length', 'word', 'incorrect_attempt_count', 'correct_attempt_count'])
 
-        self.dropdown_button = ttk.Button(self.parent, text=u"\u25BE", command=self.toggle_dropdown, width=1)
-        self.dropdown_button.grid(row=5, column=2, padx=(0, 10), pady=1)
+    # Get top 10 wrongly spelled words per user, per word_type, per word length
+    for word_type in word_type_list:
+        for word_len in unique_lengths_list:
+            # Filter words by word_type and word length
+            incorrect_words_filtered = incorrect_words_df_wrd_type[(incorrect_words_df_wrd_type['word_type'] == word_type) & 
+                                                     (incorrect_words_df_wrd_type['word_len'] == word_len)]
+            correct_words_filtered = correct_words_df_wrd_type[(correct_words_df_wrd_type['word_type'] == word_type) & 
+                                                      (correct_words_df_wrd_type['word_len'] == word_len)]
+            # Get count of each word
+            incorrect_words_word_counts = incorrect_words_filtered['word'].value_counts(ascending=False)
+            correct_words_word_counts = correct_words_filtered['word'].value_counts(ascending=False)
+            
+            # Get top 10 wrongly spelled words
+            top_wrong_words = incorrect_words_word_counts.head(10)
+            
+            # Create DataFrame for top 10 wrongly spelled words
+            top_wrong_words_data = []
+            for word, count in top_wrong_words.items():
+                correct_attempt_count = correct_words_word_counts.get(word, 0)
+                top_wrong_words_data.append({'user': user,
+                                              'word_type': word_type,
+                                              'word_length': word_len,
+                                              'word': word,
+                                              'incorrect_attempt_count': count,
+                                              'correct_attempt_count': correct_attempt_count})
+                
+            # Append results for the current word_type and word_len to user_wrong_words_df
+            user_wrong_words_df = pd.concat([user_wrong_words_df, pd.DataFrame(top_wrong_words_data)])
+            
+    # Append results for the current user to top_wrong_words_df
+    top_wrong_words_df = pd.concat([top_wrong_words_df, user_wrong_words_df])
 
-        self.dropdown = None
-        self.listbox = None
-        self.popup_opened = False
+# Sort top wrong words by incorrect attempt count in descending order
+top_wrong_words_df = top_wrong_words_df.sort_values(by='incorrect_attempt_count', ascending=False)
 
-        self.refresh_entry()
+# Save top 10 wrongly spelled words to CSV
+top_wrong_words_df.to_csv('word_stats_top_wrong_words.csv', index=False)
 
-    def create_dropdown(self):
-        if self.dropdown:
-            self.destroy_dropdown()
-
-        self.dropdown = tk.Toplevel(self.parent)
-        self.dropdown.overrideredirect(True)  # No window decorations
-
-        x = self.entry.winfo_rootx()
-        y = self.entry.winfo_rooty() + self.entry.winfo_height()
-        self.dropdown.geometry(f"+{x}+{y}")
-
-        self.listbox = tk.Listbox(self.dropdown, selectmode='multiple', exportselection=False)
-        self.listbox.pack(fill='both', expand=True)
-
-        for option in self.options:
-            self.listbox.insert('end', option)
-            if option in self.selected_options:
-                self.listbox.selection_set(self.options.index(option))
-
-        self.listbox.bind('<<ListboxSelect>>', self.on_listbox_select)
-        self.dropdown.bind("<FocusOut>", self.on_focus_out)
-
-        self.parent.bind("<1>", self.global_click)
-
-        self.dropdown.focus_set()
-        self.popup_opened = True
-
-    def destroy_dropdown(self):
-        if self.dropdown is not None:
-            self.dropdown.destroy()
-            self.dropdown = None
-            self.parent.unbind("<1>")
-        self.popup_opened = False
-
-    def toggle_dropdown(self):
-        if self.popup_opened:
-            self.destroy_dropdown()
-        else:
-            self.create_dropdown()
-
-    def global_click(self, event):
-        """
-        Close the dropdown if the click occurred outside of it.
-        """
-        if self.popup_opened:
-            if not (self.dropdown.winfo_containing(event.x_root, event.y_root) or 
-                    self.dropdown_button.winfo_containing(event.x_root, event.y_root)):
-                self.destroy_dropdown()
-
-    def on_focus_out(self, event=None):
-        pass
-
-    def on_listbox_select(self, event=None):
-        newly_selected_options = {self.options[i] for i in self.listbox.curselection()}
-        self.selected_options = newly_selected_options
-        self.refresh_entry()
-
-    def refresh_entry(self):
-        sorted_list = sorted(self.selected_options, key=self.options.index)
-        selected_text = ', '.join(map(str, sorted_list))
-        self.var.set(selected_text)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    options = ["Option 1", "Option 2", "Option 3"]
-    msd = MultiSelectDropdown(root, options)
-    root.mainloop()
+top_wrong_words_df

@@ -1,4 +1,3 @@
-review/delete word button 
 
 optimise the total code with chatgpt
 stats on the tests
