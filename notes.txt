@@ -1,6 +1,7 @@
 
 optimise the total code with chatgpt
-stats on the tests
+
+Stats- consider incorrect or remaining word count minus correct or completed word count to short list top wrong words
 
 practise wrongly spelled words with repeat no of times as variable
 learning mode to keep the words in sequence
