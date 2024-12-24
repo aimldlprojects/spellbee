@@ -2,3 +2,13 @@
 #ocr/scanned_files
 *.jpg
 ocr/**/*.jpg
+
+.venv/
+.vscode/
+*.log
+.env*
+
+test.py
+test.ipynb
+
+
