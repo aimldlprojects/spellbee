@@ -13,8 +13,9 @@
 - **Step 1.3**: Load configurations such as:
   - User IDs.
   - Test Types: "Unattended words," "Previous incorrectly spelled words," "Words practiced a week ago."
-  - Word Types: (e.g., nouns, verbs, adjectives, etc.).
-  - Word Lengths: Predefined ranges or custom lengths.
+  - Word Types: List of all unique values in the word_type column of loaded and filtered data based on the test type from `word_list_all.csv`.
+  - Word Lengths: List of all unique values of length of different words in loaded and filtered data based on the test type & word type of `word_list_all.csv`.
+  - Note: While Loading data with test Type or Word Types or Word Length filter options, always drop word that are in `review_words.csv` from `word_list_all.csv` in the first step itself.
 
 ---
 
@@ -32,16 +33,17 @@
 ---
 
 #### **3. Load and Filter Word List**
-- **Step 3.1**: When the `User ID` is selected, filter the `word_list_all.csv` by `user_id` to load user-specific word data.
+- **Step 3.1**: When the `User ID` is selected, load the data from the `word_list_all.csv` to `word_list` dataframe and then filter data by `user_id` to load user-specific word data. Match the values of user column with `user_id`. save this data to `word_list_user` dataframe.
 - **Step 3.2**: Apply **Test Type Filters**:
   - **Unattended Words**: 
-    - Filter out words that exist in `user_{user_id}_correct_words.csv` and `review_words.csv`.
+    - Filter out words that exist in `user_{user_id}_correct_words.csv` and `review_words.csv` from `word_list_user` dataframe.
   - **Previous Incorrectly Spelled Words**: 
-    - Include words only in `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv`.
+    - Include words only in `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv` from `word_list_user` dataframe.
   - **Words Practiced a Week Ago**: 
-    - Select words practiced >7 days ago in `user_{user_id}_correct_words.csv` and `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv`.
-- **Step 3.3**: Apply **Word Type Filter** based on the selected `word_type` column.
-- **Step 3.4**: Apply **Word Length Filter** based on the length of words.
+    - Select words practiced >7 days ago in `user_{user_id}_correct_words.csv` and `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv` from `word_list_user` dataframe.
+  - Save this data as `word_list_test_type` dataframe.
+- **Step 3.3**: Apply **Word Type Filter** based on the selected `word_type` column. Match the selected values with word_type colume values in `word_list_test_type` dataframe and save the data to `word_list_word_type` dataframe.
+- **Step 3.4**: Apply **Word Length Filter** based on the length of words. Match the selected values with word length of the words that are in word column of `word_list_word_type` dataframe and save it to `word_list_word_len` dataframe.
 - **Step 3.5**: Ensure filters are applied in sequence: **Test Type → Word Type → Word Length**.
 
 ---
