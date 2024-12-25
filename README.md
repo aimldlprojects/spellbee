@@ -1,6 +1,122 @@
 # spellbee
 ## App Functionality
+---
 
+### **Algorithm for the Spelling Bee Application**
+
+#### **1. Load Application Configuration**
+- **Step 1.1**: Load the `word_list_all.csv` file into a Pandas DataFrame at the application startup.
+- **Step 1.2**: Define separate CSV files for storing user-specific data:
+  - `user_{user_id}_correct_words.csv`
+  - `user_{user_id}_incorrect_words.csv`
+  - `review_words.csv`
+- **Step 1.3**: Load configurations such as:
+  - User IDs.
+  - Test Types: "Unattended words," "Previous incorrectly spelled words," "Words practiced a week ago."
+  - Word Types: (e.g., nouns, verbs, adjectives, etc.).
+  - Word Lengths: Predefined ranges or custom lengths.
+
+---
+
+#### **2. UI Initialization**
+- **Step 2.1**: Design the UI with the following components:
+  - Dropdown Menus: User ID, Test Type, Word Type, Word Length.
+  - Buttons: `Start Test`, `Check`, `Next Word`, `Review Word`, `Hear Word`.
+  - Checkboxes: `Pronounce Sentence`, `Auto Advance`, `Hide Test Options`.
+  - Text Inputs: `User Input Entry` for word spellings.
+  - Labels: App Title, Instruction Label, Current Word Label, Status Label.
+  - Side Panel: For test options.
+  - Sidebar Separator: Separates test options from the main content.
+- **Step 2.2**: Bind dropdowns, buttons, and checkboxes to their respective functions (e.g., filters, test initiation).
+
+---
+
+#### **3. Load and Filter Word List**
+- **Step 3.1**: When the `User ID` is selected, filter the `word_list_all.csv` by `user_id` to load user-specific word data.
+- **Step 3.2**: Apply **Test Type Filters**:
+  - **Unattended Words**: 
+    - Filter out words that exist in `user_{user_id}_correct_words.csv` and `review_words.csv`.
+  - **Previous Incorrectly Spelled Words**: 
+    - Include words only in `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv`.
+  - **Words Practiced a Week Ago**: 
+    - Select words practiced >7 days ago in `user_{user_id}_correct_words.csv` and `user_{user_id}_incorrect_words.csv`, excluding those in `review_words.csv`.
+- **Step 3.3**: Apply **Word Type Filter** based on the selected `word_type` column.
+- **Step 3.4**: Apply **Word Length Filter** based on the length of words.
+- **Step 3.5**: Ensure filters are applied in sequence: **Test Type → Word Type → Word Length**.
+
+---
+
+#### **4. Test Initialization**
+- **Step 4.1**: On clicking the `Start Test` button:
+  - Shuffle the filtered word list.
+  - Pick the first word randomly.
+  - Display the current word (masked) and play the pronunciation and related sentence (if `Pronounce Sentence` is checked).
+  - Update the `Current Word Label` with the word count and the `Instruction Label` with guidelines.
+
+---
+
+#### **5. Test Progression**
+- **Step 5.1**: **Hear Word**: Replay the word and sentence pronunciation when the `Hear Word` button is clicked.
+- **Step 5.2**: **User Input**:
+  - User enters the spelling in the `User Input Entry`.
+  - On clicking the `Check` button:
+    - Compare the user’s input with the correct spelling.
+    - If correct:
+      - Save the word in `user_{user_id}_correct_words.csv`.
+      - Remove the word from the current word list.
+      - Update the status message: "Correct!".
+    - If incorrect:
+      - Save the word in `user_{user_id}_incorrect_words.csv`.
+      - Display the correct spelling in the status message: "Incorrect! Correct spelling is [correct_word].".
+    - Update the `Status Label` with the current and total test scores.
+  - If `Auto Advance` is checked, wait 2 seconds and move to the next word.
+- **Step 5.3**: **Next Word**:
+  - On clicking the `Next Word` button:
+    - Randomly pick another word from the current word list.
+    - Display the next word (masked).
+    - No score is updated for skipped words.
+- **Step 5.4**: **Review Word**:
+  - On clicking the `Review Word` button:
+    - Save the word in `review_words.csv`.
+    - Remove the word from the current word list.
+    - Pick the next word automatically.
+- **Step 5.5**: **Auto Advance**: Automatically proceed to the next word after 2 seconds if the feature is enabled.
+
+---
+
+#### **6. Test Completion**
+- **Step 6.1**: The test ends when all words from the filtered list are exhausted.
+- **Step 6.2**: Display the final score summary:
+  - Correct words.
+  - Incorrect words.
+  - Words marked for review.
+- **Step 6.3**: Save the test results to a session-specific file for analytics.
+
+---
+
+#### **7. Additional Features**
+- **Step 7.1**: **Hide Test Options**: If the checkbox is checked, hide the side panel with filters and test options.
+- **Step 7.2**: Add a progress bar to visually represent test completion.
+- **Step 7.3**: Add analytics (optional):
+  - Word accuracy rates.
+  - Weekly progress tracking.
+- **Step 7.4**: Add a settings panel to manage users, word list updates, and file paths.
+
+---
+
+#### **8. Error Handling**
+- **Step 8.1**: Validate user input for empty or invalid characters.
+- **Step 8.2**: Handle cases where no words are left after applying filters.
+- **Step 8.3**: Log errors in a separate log file for debugging.
+
+---
+
+#### **9. App Shutdown**
+- Save the current state (e.g., progress, filters) to allow resuming later.
+- Close all open file handles and clear temporary variables.
+
+
+---
 ''' This app is for testing the spelling capabilities of the users. word_list.csv is the file which contains the words that are to be tested.
 The app has a UI which has the following features:
     User ID dropdown menu to show the list of user. 
