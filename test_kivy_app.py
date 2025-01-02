@@ -8,13 +8,35 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.popup import Popup
+from kivy.properties import ListProperty, ObjectProperty
 from kivy.core.audio import SoundLoader
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
+from kivy.clock import Clock
 import pandas as pd
 import random
 import os
 from datetime import datetime
+
+class SelectableLabel(BoxLayout):
+    value = ObjectProperty(None)
+
+    def __init__(self, value, dropdown, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "horizontal"
+        self.value = value
+        self.dropdown = dropdown
+        self.label = Label(text=str(value))
+        self.remove_button = Button(text="X", size_hint=(None, 1), width=30)
+        self.remove_button.bind(on_release=self.remove_self)
+        self.add_widget(self.label)
+        self.add_widget(self.remove_button)
+
+    def remove_self(self, instance):
+        self.parent.remove_widget(self)
+        self.dropdown.values.append(self.value)
+        self.dropdown.values.sort()
+        self.dropdown.text = "Select an option"
 
 class SpellBeeApp(App):
     def __init__(self, **kwargs):
@@ -33,6 +55,9 @@ class SpellBeeApp(App):
         self.correct_words_file = ""
         self.incorrect_words_file = ""
         self.review_words_file = "review_words.csv"
+        self.timer = None
+        self.time_remaining = 0
+        self.time_limit_per_word = 30  # Set the timer limit per word (in seconds)
 
     def build(self):
         self.load_word_list()
@@ -42,7 +67,7 @@ class SpellBeeApp(App):
         # Left panel for dropdowns
         left_panel = BoxLayout(orientation="vertical", size_hint=(0.3, 1))
         toggle_button = ToggleButton(text="Options", size_hint=(1, 0.1), state="normal")
-        dropdown_panel = BoxLayout(orientation="vertical", size_hint=(1, 0.9))
+        self.dropdown_panel = BoxLayout(orientation="vertical", size_hint=(1, 0.9))
 
         self.user_dropdown = DropDown()
         self.test_type_dropdown = DropDown()
@@ -64,18 +89,18 @@ class SpellBeeApp(App):
         self.populate_dropdown(self.user_dropdown, self.word_list_all['user'].unique(), self.set_user)
         self.populate_dropdown(self.test_type_dropdown, ["Unattended Words", "Previous Incorrectly Spelled Words", "Words Practiced a Week Ago"], self.set_test_type)
 
-        dropdown_panel.add_widget(user_button)
-        dropdown_panel.add_widget(test_type_button)
-        dropdown_panel.add_widget(word_type_button)
-        dropdown_panel.add_widget(word_length_button)
-        dropdown_panel.add_widget(start_test_button)
+        self.dropdown_panel.add_widget(user_button)
+        self.dropdown_panel.add_widget(test_type_button)
+        self.dropdown_panel.add_widget(word_type_button)
+        self.dropdown_panel.add_widget(word_length_button)
+        self.dropdown_panel.add_widget(start_test_button)
 
-        scroll_view = ScrollView()
-        scroll_view.add_widget(dropdown_panel)
+        # scroll_view = ScrollView()
+        # scroll_view.add_widget(dropdown_panel)
 
-        toggle_button.bind(on_press=lambda instance: self.toggle_panel(instance, dropdown_panel))
+        toggle_button.bind(on_press=lambda instance: self.toggle_panel(instance, self.dropdown_panel))
         left_panel.add_widget(toggle_button)
-        left_panel.add_widget(scroll_view)
+        left_panel.add_widget(self.dropdown_panel)
 
         # Main body
         body_layout = BoxLayout(orientation="vertical", size_hint=(0.7, 1))
@@ -83,8 +108,11 @@ class SpellBeeApp(App):
         self.input_field = TextInput(hint_text="Enter the spelling here", multiline=False, size_hint=(1, 0.1))
         body_layout.add_widget(self.input_field)
 
-        self.status_label = Label(text="Welcome to SpellBee!", size_hint=(1, 0.8))
+        self.status_label = Label(text="Welcome to SpellBee!", size_hint=(1, 0.7))
         body_layout.add_widget(self.status_label)
+
+        self.timer_label = Label(text="", size_hint=(1, 0.1))
+        body_layout.add_widget(self.timer_label)
 
         # Buttons at the bottom
         button_layout = BoxLayout(size_hint=(1, 0.1))
@@ -109,6 +137,37 @@ class SpellBeeApp(App):
         app_layout.add_widget(body_layout)
 
         return app_layout
+
+    def update_selected_values(self, value):
+        if value != "Select an option":
+            if value in self.word_type_dropdown.values:
+                selectable_label = SelectableLabel(value=value, dropdown=self.word_type_dropdown)
+                self.selected_values_layout.add_widget(selectable_label)
+
+    def start_timer(self):
+        self.time_remaining = self.time_limit_per_word
+        self.update_timer_label()
+        self.timer = Clock.schedule_interval(self.decrement_timer, 1)
+
+    def stop_timer(self):
+        if self.timer:
+            self.timer.cancel()
+            self.timer = None
+
+    def decrement_timer(self, dt):
+        self.time_remaining -= 1
+        self.update_timer_label()
+        if self.time_remaining <= 0:
+            self.time_up()
+
+    def update_timer_label(self):
+        self.timer_label.text = f"Time remaining: {self.time_remaining}s"
+
+    def time_up(self):
+        self.stop_timer()
+        self.status_label.text = "Time's up! Moving to the next word."
+        self.update_incorrect_words() # if time is up, consider it as incorrect
+        self.next_word()
 
     def toggle_panel(self, instance, panel):
         panel.size_hint_y = 0 if panel.size_hint_y else 0.9
@@ -193,7 +252,18 @@ class SpellBeeApp(App):
             self.word_list_test_type = practiced_words[(practiced_words['timestamp'] < one_week_ago) & ~practiced_words['word'].isin(review_words['review_word'])]
 
         if 'word_type' in self.word_list_test_type.columns:
-            self.populate_dropdown(self.word_type_dropdown, self.word_list_test_type['word_type'].unique(), self.set_word_type)
+            # self.populate_dropdown(self.word_type_dropdown, self.word_list_test_type['word_type'].unique(), self.set_word_type)
+            self.word_type_dropdown.values = list(self.word_list_test_type['word_type'].unique())
+            self.word_type_dropdown.text = "Select an option"
+            for value in self.word_type_dropdown.values:
+                btn = Button(text=str(value), size_hint_y=None, height=44)
+                btn.bind(on_release=lambda btn: self.word_type_dropdown.select(btn.text))
+                self.word_type_dropdown.add_widget(btn)
+
+            self.selected_values_layout = BoxLayout(orientation="horizontal", size_hint_y=None, height=44)
+
+            self.word_type_dropdown.bind(on_select=lambda instance, x: self.update_selected_values(x))
+            self.dropdown_panel.add_widget(self.selected_values_layout)
         else:
             self.word_list_test_type = pd.DataFrame()
 
@@ -212,6 +282,7 @@ class SpellBeeApp(App):
         self.next_word()
 
     def next_word(self, instance=None):
+        self.stop_timer()
         if self.current_word_list:
             self.current_word = self.current_word_list.pop()
             masked_word = '*' * len(self.current_word)
@@ -221,10 +292,12 @@ class SpellBeeApp(App):
                 sound = SoundLoader.load(sound_file)
                 if sound:
                     sound.play()
+            self.start_timer()
         else:
             self.status_label.text = "No more words to practice!"
 
     def check_spelling(self, instance):
+        self.stop_timer()
         user_input = self.input_field.text.strip()
         if user_input.lower() == self.current_word.lower():
             self.status_label.text = "Correct!"
